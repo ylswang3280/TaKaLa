@@ -26,10 +26,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-//test
+
+routes(app);
+/*
 app.get('/', routes.index);
 app.get('/users', user.list);
-
+*/
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

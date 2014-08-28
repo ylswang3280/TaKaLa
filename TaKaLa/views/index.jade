@@ -2,4 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #{title} 
+  #test #{name}
+     if old
+        p You are amazing
+     else
+        p Get on it 
+        
+     label 
+       | Username:
+       input(name='user[name]')  
+     
+     a(href='/user/' + user.name)= user.age
+     
