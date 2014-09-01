@@ -4,8 +4,8 @@ block content
   h1= title
   p Welcome to #{title} 
   #test #{name}
-     if old
-        p You are amazing
+     if success
+        p Registration succeeded!
      else
         p Get on it 
         
@@ -13,5 +13,5 @@ block content
        | Username:
        input(name='user[name]')  
      
-     a(href='/user/' + user.name)= user.age
+ 
      

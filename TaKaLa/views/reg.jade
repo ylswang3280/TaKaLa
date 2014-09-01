@@ -1,0 +1,19 @@
+extends layout
+
+block content
+   div
+        form(method='post')
+             div
+                label(for='username') User name:
+                input(id='username', type='text', value='', name='username')
+             div
+                label(for='password') Password: 
+                input(id='password', type='password', value='', name='password')
+             div
+                label(for='passwordRepeat') Reenter your password:
+                input(id='passwordRepeat', type='password', value='', name='passwordRepeat')
+             div
+                label(for='email') Email;
+                input(id='email', type='text', value='', name='email')
+             div
+                input(type='submit', value='sign up')
