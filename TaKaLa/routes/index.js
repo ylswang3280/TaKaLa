@@ -17,7 +17,8 @@ module.exports = function(app){
 		});
 	});
 	
-	app.get("/login", function(req, res){
+	app.get("/login", checkLogin, function(req, res){
+		
 		res.render('login', { 
 			title: 'Login',
 			user: req.session.user
@@ -33,7 +34,7 @@ module.exports = function(app){
 			if(err){
 				req.flash('error', 'no such user!');
 				res.redirect('/login');
-			}else{
+			}else if(user){
 				if(user.password != password){
 					req.flash('error', 'password is not correct');
 					res.redirect('login');
@@ -41,11 +42,21 @@ module.exports = function(app){
 					req.session.user = user;
 					res.redirect('/');
 				}
+			}else{
+				req.flash('error', 'no such user!');
+				res.redirect('/login');
 			}
 		});
 	});
 	
-	app.get("/reg", function(req, res){
+	app.get("/logout", function(req, res){
+		req.session.user = null;
+		req.flash('sucess', 'Logout succeeded.');
+		res.redirect('/');
+	});
+	
+	app.get("/reg", checkLogin, function(req, res){
+
 		res.render('reg', {title: 'Register'});
 		
 	});
@@ -104,5 +115,20 @@ module.exports = function(app){
 			});
 		}
 	});
+	
+	function checkLogin(req, res, next){		
+		if(req.session.user){
+			req.flash('error', 'You have already logged in!');
+			return res.redirect('/');
+		}	
+		next();
+	}
+	
+	function checkNotLogin(req, res, next){
+		if(!req.session.user){
+			return res.redirect('/login');
+		}
+		next();
+	}
 	
 };
