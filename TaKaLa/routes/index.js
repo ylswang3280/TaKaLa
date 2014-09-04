@@ -123,6 +123,15 @@ module.exports = function(app){
     	});
     });
     
+    app.get('/upload', checkNotLogin, function(req, res){
+    	res.render('upload', {
+    		title: 'Upload',
+    		user: req.session.user,
+    		success: req.flash('success').toString(),
+    	    error: req.flash('error').toString()
+    	});
+    });
+    
 	function checkLogin(req, res, next){		
 		if(req.session.user){
 			req.flash('error', 'You have already logged in!');
