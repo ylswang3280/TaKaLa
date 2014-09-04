@@ -39,7 +39,7 @@ module.exports = User;
 	   mongodb.open(function(err, db){
 		   if(err){
 			   mongodb.close();
-			   callback(err);
+			   return callback(err);
 		   }
 		   db.collection('takala_users', function(err, col){
 			   if(err){
@@ -47,7 +47,6 @@ module.exports = User;
 				   return callback(err);
 			   }
 			   col.findOne({email: email}, function(err, user){
-				   
 				   if(err){
 					   mongodb.close();
 					   return callback(err);

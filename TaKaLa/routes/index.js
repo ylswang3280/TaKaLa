@@ -3,18 +3,28 @@
  * GET home page.
  */
 var User = require('../models/user.js'),
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    Post = require('../models/post.js');
+
+var fs = require('fs');
 
 
 
 module.exports = function(app){
 	app.get("/", function(req, res){
-		res.render('index', { 
-			title: 'Home',
-			user: req.session.user,
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString()
+		Post.get(null, function(err, posts){
+				if(err){
+					req.flash('error', 'Posts cannot be retrieved.');
+				}
+				res.render('index', { 
+					title: 'Home',
+					user: req.session.user,
+					posts: posts,
+					success: req.flash('success').toString(),
+					error: req.flash('error').toString()
+				});
 		});
+		
 	});
 	
 	app.get("/login", checkLogin, function(req, res){
@@ -90,32 +100,29 @@ module.exports = function(app){
 				req.flash('success', 'Registration succeeded!');
 				res.redirect('/');
 			});
-			
 		});
-		
-		
 	});
 	
-	app.post("/signup", function(req, res){
-		console.log(req.body);
-		var name = req.body.username;
-		var password = req.body.password;
-		var roy = new User("Yu", "15");
-		if(name != null && password != null){
-			res.render('index', { 
-				title: 'Home',
-				name: name,
-				age: password
-			});
-		}else{
-			res.render('index', { 
-				title: 'Home',
-				name: 'tt',
-				age: '15'
-			});
-		}
-	});
+    app.get('/post', checkNotLogin, function(req, res){
+    	res.render('post', {
+    		title: 'Post your article',
+    		user: req.session.user
+    	});
+    });
 	
+    app.post('/post', checkNotLogin, function(req, res){
+    	var currentUser = req.session.user;
+    	var post = new Post(currentUser[0].name, req.body.title, req.body.post);
+    	post.save(function(err){
+    		if(err){
+    			req.flash('error', err);
+    			return res.redirect('/');
+    		}
+    		req.flash('success', 'You have sucessfully posted your article!');
+    		res.redirect('/');
+    	});
+    });
+    
 	function checkLogin(req, res, next){		
 		if(req.session.user){
 			req.flash('error', 'You have already logged in!');

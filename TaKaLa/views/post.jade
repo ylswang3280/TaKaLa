@@ -1,0 +1,17 @@
+extends layout
+
+block content
+      br
+      br
+      div
+         form(method='post')
+             div
+                label(for='title') Title:
+                br
+                input(id='title', type='text', value='', name='title')
+             div
+                label(for='post') Content:
+                br
+                textarea(name='post', rows='20', cols='100')
+             div
+                input(id='submitButton', type='submit', value='submit')

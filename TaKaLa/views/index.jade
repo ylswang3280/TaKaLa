@@ -1,17 +1,20 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title} 
-  #test #{name}
-     if success
-        p Registration succeeded!
-     else
-        p Get on it 
+    if posts
+        for post in posts
+            p
+             h2
+               a(href='#')= post.title
+            p.info  
+              | Author:
+              a(href='#')= post.name
+              | Time:
+              #{post.time.minute}
+           
+            p= post.post
         
-     label 
-       | Username:
-       input(name='user[name]')  
+           
      
  
      
