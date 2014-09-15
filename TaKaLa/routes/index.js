@@ -132,6 +132,23 @@ module.exports = function(app){
     	});
     });
     
+    app.post('/upload', checkNotLogin, function(req, res){
+    	for(var i in req.files){
+    		if(req.files[i].size == 0){
+    			fs.unlinkSync(req.files[i].path);
+    			console.log('Successfully removed an empty file');
+    		}else{
+    			var target_path = './public/images/' + req.files[i].name;
+    			fs.renameSync(req.files[i].path, target_path);
+    		}
+    	} 
+    	req.flash('success', 'uploaded successfully');
+    	res.redirect('/upload');
+    });
+    
+    
+    
+    
 	function checkLogin(req, res, next){		
 		if(req.session.user){
 			req.flash('error', 'You have already logged in!');
